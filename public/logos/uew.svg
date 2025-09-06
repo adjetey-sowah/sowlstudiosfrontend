@@ -1,0 +1,45 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Outer red circle with flame-like border -->
+  <circle cx="100" cy="100" r="90" fill="#FF0000"/>
+  
+  <!-- White flame/star points around the edge -->
+  <g fill="white">
+    <path d="M100 20L105 35L110 20L105 25L100 20Z"/>
+    <path d="M130 30L125 45L140 35L130 40L130 30Z"/>
+    <path d="M160 60L145 65L155 80L155 65L160 60Z"/>
+    <path d="M170 100L155 95L170 110L165 100L170 100Z"/>
+    <path d="M160 140L145 135L155 120L155 135L160 140Z"/>
+    <path d="M130 170L125 155L140 165L130 160L130 170Z"/>
+    <path d="M100 180L105 165L110 180L105 175L100 180Z"/>
+    <path d="M70 170L75 155L60 165L70 160L70 170Z"/>
+    <path d="M40 140L55 135L45 120L45 135L40 140Z"/>
+    <path d="M30 100L45 95L30 110L35 100L30 100Z"/>
+    <path d="M40 60L55 65L45 80L45 65L40 60Z"/>
+    <path d="M70 30L75 45L60 35L70 40L70 30Z"/>
+  </g>
+  
+  <!-- Central flame -->
+  <path d="M100 50L105 45L110 50L105 60L100 65L95 60L100 50Z" fill="white"/>
+  
+  <!-- Inner blue circle -->
+  <circle cx="100" cy="100" r="45" fill="#0000FF"/>
+  
+  <!-- Central Adinkra-inspired symbol in white -->
+  <g fill="white">
+    <!-- Four interconnected circles -->
+    <circle cx="85" cy="85" r="8"/>
+    <circle cx="115" cy="85" r="8"/>
+    <circle cx="85" cy="115" r="8"/>
+    <circle cx="115" cy="115" r="8"/>
+    
+    <!-- Connecting lines -->
+    <rect x="93" y="98" width="14" height="4"/>
+    <rect x="98" y="93" width="4" height="14"/>
+  </g>
+  
+  <!-- Banner at bottom -->
+  <path d="M50 170L150 170L145 185L55 185L50 170Z" fill="#0000FF"/>
+  
+  <!-- Motto text -->
+  <text x="100" y="180" text-anchor="middle" fill="white" font-family="Arial" font-size="8" font-weight="bold">EDUCATION FOR SERVICE</text>
+</svg>

@@ -1,0 +1,46 @@
+<svg width="200" height="240" viewBox="0 0 200 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Shield background -->
+  <path d="M100 20L180 40V140C180 160 160 180 100 220C40 180 20 160 20 140V40L100 20Z" fill="#2D4A87"/>
+  
+  <!-- Three wheat/palm fronds at top -->
+  <g fill="#D4AF37">
+    <!-- Left frond -->
+    <path d="M60 50L65 45L70 50L65 55L60 60L55 55L60 50Z"/>
+    <path d="M55 55L60 50L65 55L60 60L55 65L50 60L55 55Z"/>
+    <path d="M50 60L55 55L60 60L55 65L50 70L45 65L50 60Z"/>
+    
+    <!-- Center frond -->
+    <path d="M95 50L100 45L105 50L100 55L95 60L90 55L95 50Z"/>
+    <path d="M90 55L95 50L100 55L95 60L90 65L85 60L90 55Z"/>
+    <path d="M85 60L90 55L95 60L90 65L85 70L80 65L85 60Z"/>
+    
+    <!-- Right frond -->
+    <path d="M130 50L135 45L140 50L135 55L130 60L125 55L130 50Z"/>
+    <path d="M125 55L130 50L135 55L130 60L125 65L120 60L125 55Z"/>
+    <path d="M120 60L125 55L130 60L125 65L120 70L115 65L120 60Z"/>
+  </g>
+  
+  <!-- Horizontal line -->
+  <rect x="30" y="85" width="140" height="4" fill="#D4AF37"/>
+  
+  <!-- Central decorative motif (Adinkra-inspired) -->
+  <g fill="#D4AF37" stroke="#D4AF37" stroke-width="2">
+    <!-- Outer circles -->
+    <circle cx="70" cy="120" r="12" fill="none"/>
+    <circle cx="130" cy="120" r="12" fill="none"/>
+    
+    <!-- Inner spirals -->
+    <path d="M70 108C76 108 82 114 82 120C82 126 76 132 70 132C64 132 58 126 58 120C58 114 64 108 70 108" fill="none"/>
+    <path d="M130 108C136 108 142 114 142 120C142 126 136 132 130 132C124 132 118 126 118 120C118 114 124 108 130 108" fill="none"/>
+    
+    <!-- Central connecting element -->
+    <path d="M82 120L118 120" stroke-width="3"/>
+    <circle cx="100" cy="120" r="8" fill="#D4AF37"/>
+  </g>
+  
+  <!-- Banner at bottom -->
+  <path d="M30 190L170 190C175 190 180 195 180 200L170 210L30 210C25 210 20 205 20 200C20 195 25 190 30 190Z" fill="#D4AF37"/>
+  
+  <!-- Motto text -->
+  <text x="100" y="205" text-anchor="middle" fill="#2D4A87" font-family="serif" font-size="10" font-weight="bold">INTEGRI PROCEDAMUS</text>
+</svg>
