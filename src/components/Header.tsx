@@ -59,16 +59,28 @@ const Header = () => {
             ))}
           </nav>
 
-          <button
-            onClick={() => scrollToSection('booking')}
-            className={`hidden md:block px-6 py-3 rounded-full font-medium transition-all duration-500 transform hover:scale-105 ${
-              isScrolled 
-                ? 'bg-amber-600 text-white hover:bg-amber-700 shadow-lg' 
-                : 'bg-white/20 backdrop-blur-md text-white border border-white/30 hover:bg-white hover:text-gray-900'
-            }`}
-          >
-            Book Now
-          </button>
+          <div className="hidden md:flex items-center space-x-4">
+            <a
+              href="/admin"
+              className={`text-xs px-3 py-1.5 rounded-full font-medium transition-all duration-500 ${
+                isScrolled
+                  ? 'text-gray-600 hover:text-amber-600'
+                  : 'text-white/70 hover:text-white'
+              }`}
+            >
+              Admin
+            </a>
+            <button
+              onClick={() => scrollToSection('booking')}
+              className={`px-6 py-3 rounded-full font-medium transition-all duration-500 transform hover:scale-105 ${
+                isScrolled
+                  ? 'bg-amber-600 text-white hover:bg-amber-700 shadow-lg'
+                  : 'bg-white/20 backdrop-blur-md text-white border border-white/30 hover:bg-white hover:text-gray-900'
+              }`}
+            >
+              Book Now
+            </button>
+          </div>
 
           {/* Mobile Menu Button */}
           <button
