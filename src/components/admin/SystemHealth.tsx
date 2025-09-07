@@ -124,7 +124,8 @@ const SystemHealth: React.FC = () => {
   };
 
   const fetchActuatorHealth = async (): Promise<ActuatorHealth> => {
-    const response = await fetch('http://localhost:8000/actuator/health', {
+    const actuatorBaseUrl = import.meta.env.VITE_ACTUATOR_BASE_URL || 'http://localhost:8000/actuator';
+    const response = await fetch(`${actuatorBaseUrl}/health`, {
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('adminToken')}`,
         'Content-Type': 'application/json',
@@ -134,7 +135,8 @@ const SystemHealth: React.FC = () => {
   };
 
   const fetchActuatorInfo = async (): Promise<ActuatorInfo> => {
-    const response = await fetch('http://localhost:8000/actuator/info', {
+    const actuatorBaseUrl = import.meta.env.VITE_ACTUATOR_BASE_URL || 'http://localhost:8000/actuator';
+    const response = await fetch(`${actuatorBaseUrl}/info`, {
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('adminToken')}`,
         'Content-Type': 'application/json',

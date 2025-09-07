@@ -1,6 +1,7 @@
 // API utility functions for admin dashboard
 
-const API_BASE_URL = 'http://localhost:8000/api/v1';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api/v1';
+const ACTUATOR_BASE_URL = import.meta.env.VITE_ACTUATOR_BASE_URL || 'http://localhost:8000/actuator';
 
 // Get auth headers with JWT token
 export const getAuthHeaders = (): HeadersInit => {

@@ -1,0 +1,42 @@
+services:
+  - type: web
+    name: sowl-studios-frontend
+    env: node
+    plan: free
+    buildCommand: npm ci && npm run build:prod
+    startCommand: npm run start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: VITE_NODE_ENV
+        value: production
+      - key: VITE_API_BASE_URL
+        value: https://your-backend-app.onrender.com/api/v1
+      - key: VITE_ACTUATOR_BASE_URL
+        value: https://your-backend-app.onrender.com/actuator
+      - key: VITE_APP_NAME
+        value: Sowl Studios
+      - key: VITE_APP_VERSION
+        value: 1.0.0
+      - key: VITE_APP_DESCRIPTION
+        value: Professional Photography Services
+      - key: VITE_CONTACT_EMAIL
+        value: info@sowlstudios.com
+      - key: VITE_CONTACT_PHONE
+        value: +233 55 700 9665
+      - key: VITE_FACEBOOK_URL
+        value: https://facebook.com/sowlstudios
+      - key: VITE_INSTAGRAM_URL
+        value: https://instagram.com/sowlstudios
+      - key: VITE_TWITTER_URL
+        value: https://twitter.com/sowlstudios
+      - key: VITE_ENABLE_ADMIN_DASHBOARD
+        value: true
+      - key: VITE_ENABLE_SYSTEM_HEALTH
+        value: true
+      - key: VITE_ENABLE_BOOKING_FORM
+        value: true
+      - key: VITE_DEBUG_MODE
+        value: false
+      - key: VITE_SHOW_CONSOLE_LOGS
+        value: false
