@@ -11,9 +11,9 @@ services:
       - key: VITE_NODE_ENV
         value: production
       - key: VITE_API_BASE_URL
-        value: https://your-backend-app.onrender.com/api/v1
+        value: https://sowlstudios.onrender.com/api/v1
       - key: VITE_ACTUATOR_BASE_URL
-        value: https://your-backend-app.onrender.com/actuator
+        value: https://sowlstudios.onrender.com/actuator
       - key: VITE_APP_NAME
         value: Sowl Studios
       - key: VITE_APP_VERSION
