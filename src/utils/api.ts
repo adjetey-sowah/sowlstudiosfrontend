@@ -1,6 +1,5 @@
 // API utility functions for admin dashboard
-
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://sowlstudios.onrender.com/api/v1';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "https://sowlstudios.onrender.com/api/v1";
 const ACTUATOR_BASE_URL = import.meta.env.VITE_ACTUATOR_BASE_URL || 'https://sowlstudios.onrender.com/actuator';
 
 // Get auth headers with JWT token
@@ -122,6 +121,24 @@ export const adminAPI = {
     });
 
     return apiRequest(`/admin/bookings/search?${searchParams}`);
+  },
+
+  getTotalSales: async (params?: {
+    startDate?: string;
+    endDate?: string;
+    status?: string;
+  }) => {
+    const searchParams = new URLSearchParams();
+    
+    if (params) {
+      Object.entries(params).forEach(([key, value]) => {
+        if (value !== undefined && value !== null && value !== '') {
+          searchParams.append(key, value.toString());
+        }
+      });
+    }
+
+    return apiRequest(`/admin/bookings/stats/sales?${searchParams}`);
   },
 };
 

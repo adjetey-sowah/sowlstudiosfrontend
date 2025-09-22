@@ -61,7 +61,7 @@ const Header = () => {
 
           <div className="hidden md:flex items-center space-x-4">
             <button
-              onClick={() => scrollToSection('booking')}
+              onClick={() => scrollToSection('booking-form')}
               className={`px-6 py-3 rounded-full font-medium transition-all duration-500 transform hover:scale-105 ${
                 isScrolled
                   ? 'bg-amber-600 text-white hover:bg-amber-700 shadow-lg'
@@ -110,7 +110,7 @@ const Header = () => {
                 </button>
               ))}
               <button
-                onClick={() => scrollToSection('booking')}
+                onClick={() => scrollToSection('booking-form')}
                 className="w-full bg-amber-600 text-white px-6 py-3 rounded-full hover:bg-amber-700 transition-colors font-medium mt-4"
               >
                 Book Now

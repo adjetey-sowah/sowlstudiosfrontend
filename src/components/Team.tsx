@@ -7,16 +7,16 @@ const Team = () => {
       name: "Adjetey Sowah Julius",
       role: "Lead Photographer & Founder",
       image: "/gallery/julsbaby.jpg",
-      bio: "With over 12 years of experience in graduation photography, Sarah brings artistic vision and technical expertise to every shoot.",
-      experience: "12+ Years",
+      bio: "For over 5 years, Juls has been capturing moments that matter most. With a sharp eye and a love for storytelling through the lens, Juls makes sure every shot feels as good as the memory itself.”",
+      experience: "5+ Years",
       specialization: "Portrait & Ceremony Photography"
     },
     {
-      name: "Marcus Chen",
+      name: "Joel Amena",
       role: "Senior Photographer",
-      image: "https://images.pexels.com/photos/1681010/pexels-photo-1681010.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop",
-      bio: "Marcus specializes in capturing candid moments and group dynamics, ensuring every graduate's personality shines through.",
-      experience: "8+ Years",
+      image: "/gallery/sirjoel.jpg",
+      bio: "Joel has a knack for catching the real moments — the laughs, the energy, the squad vibes. His candid shots bring out every graduate’s personality, making each photo feel alive.",
+      experience: "3+ Years",
       specialization: "Group & Candid Photography"
     },
     {
@@ -24,7 +24,7 @@ const Team = () => {
       role: "Creative Director",
       image: "https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop",
       bio: "Emily oversees the creative process and post-production, ensuring every image meets our highest standards of excellence.",
-      experience: "10+ Years",
+      experience: "3+ Years",
       specialization: "Creative Direction & Editing"
     }
   ];
@@ -92,21 +92,21 @@ const Team = () => {
             <div className="mb-4">
               <Camera className="h-12 w-12 text-amber-600 mx-auto" />
             </div>
-            <h3 className="text-3xl font-bold text-gray-900 mb-2">30+</h3>
+            <h3 className="text-3xl font-bold text-gray-900 mb-2">10+</h3>
             <p className="text-gray-600">Years Combined Experience</p>
           </div>
           <div className="text-center p-8 bg-white rounded-xl shadow-lg">
             <div className="mb-4">
               <Users className="h-12 w-12 text-amber-600 mx-auto" />
             </div>
-            <h3 className="text-3xl font-bold text-gray-900 mb-2">5000+</h3>
+            <h3 className="text-3xl font-bold text-gray-900 mb-2">100+</h3>
             <p className="text-gray-600">Graduates Photographed</p>
           </div>
           <div className="text-center p-8 bg-white rounded-xl shadow-lg">
             <div className="mb-4">
               <Award className="h-12 w-12 text-amber-600 mx-auto" />
             </div>
-            <h3 className="text-3xl font-bold text-gray-900 mb-2">15+</h3>
+            <h3 className="text-3xl font-bold text-gray-900 mb-2">3+</h3>
             <p className="text-gray-600">Awards & Recognition</p>
           </div>
         </div>
