@@ -10,6 +10,7 @@ import {
   AlertCircle
 } from 'lucide-react';
 import { adminAPI, handleApiError } from '../../utils/api';
+import SalesStats from './SalesStats';
 
 interface BookingStatsDto {
   totalBookings: number;
@@ -182,6 +183,12 @@ const AdminStats: React.FC = () => {
             );
           })}
         </div>
+      </div>
+
+      {/* Sales Statistics */}
+      <div>
+        <h2 className="text-2xl font-serif font-bold text-gray-900 mb-6">Sales Overview</h2>
+        <SalesStats />
       </div>
 
       {/* Package Statistics */}

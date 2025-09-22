@@ -6,22 +6,22 @@ const Testimonials = () => {
 
   const testimonials = [
     {
-      name: "Jennifer Martinez",
-      graduation: "Stanford University, Class of 2023",
-      image: "https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=200&h=200&fit=crop",
+      name: "Janet",
+      graduation: "University of Cape Coast, Class of 2023",
+      image: "/gallery/img_223344.jpg",
       rating: 5,
-      text: "Sowl Studios captured not just my graduation photos, but the entire emotion of the day. The team was professional, creative, and made me feel completely comfortable. The final photos exceeded all my expectations and perfectly represent this milestone moment in my life."
+      text: "Sowl Studios didn’t just take my graduation pictures — they captured the whole feeling of the day. The team was easy to work with, made me feel comfortable, and the photos came out even better than I hoped. They really gave me memories I’ll hold onto forever."
     },
     {
-      name: "Michael Thompson",
-      graduation: "Harvard Business School, MBA 2023",
-      image: "https://images.pexels.com/photos/1681010/pexels-photo-1681010.jpeg?auto=compress&cs=tinysrgb&w=200&h=200&fit=crop",
+      name: "Samdeen Mumuni",
+      graduation: "University of Cape Coast, IT 2024",
+      image: "/gallery/IMG_6158.jpg",
       rating: 5,
-      text: "From the initial consultation to the final delivery, Sowl Studios demonstrated exceptional professionalism and artistic vision. They understood exactly what I wanted and delivered photos that tell the story of my academic journey beautifully. Highly recommend for any graduate!"
+      text: "Sowl Studios didn’t just snap my graduation photos — they caught the whole vibe of the day. The team was cool, made the process stress-free, and the shots came out way better than I expected. They turned a big milestone into memories I’ll always look back on."
     },
     {
-      name: "Sophia Chen",
-      graduation: "MIT, Computer Science 2023",
+      name: "Grace",
+      graduation: "UPSA, Accounting 2023",
       image: "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=200&h=200&fit=crop",
       rating: 5,
       text: "The attention to detail and artistic approach at Sowl Studios is unmatched. They captured both formal portraits and candid moments that perfectly represent my personality and achievement. The photos are treasures I'll keep forever."

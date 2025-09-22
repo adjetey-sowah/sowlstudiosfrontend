@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const Gallery = () => {
@@ -6,7 +6,24 @@ const Gallery = () => {
   const [filter, setFilter] = useState('all');
   const [isVisible, setIsVisible] = useState(false);
   const [loadedImages, setLoadedImages] = useState<Set<number>>(new Set());
+  const [columns, setColumns] = useState(3);
   const sectionRef = useRef<HTMLElement>(null);
+  const galleryRef = useRef<HTMLDivElement>(null);
+
+  // Handle responsive columns
+  useEffect(() => {
+    const updateColumns = () => {
+      const width = window.innerWidth;
+      if (width < 640) setColumns(1);
+      else if (width < 1024) setColumns(2);
+      else if (width < 1280) setColumns(3);
+      else setColumns(4);
+    };
+
+    updateColumns();
+    window.addEventListener('resize', updateColumns);
+    return () => window.removeEventListener('resize', updateColumns);
+  }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -30,73 +47,85 @@ const Gallery = () => {
       src: "/gallery/img_1234567.jpeg",
       category: "individual",
       quote: "Dreams take flight with golden confetti and endless possibilities",
-      alt: "Graduation celebration with balloons and golden confetti"
+      alt: "Graduation celebration with balloons and golden confetti",
+      height: 320
     },
     {
       src: "/gallery/IMG_6093.jpg",
       category: "individual",
       quote: "Dreams take flight with golden confetti and endless possibilities",
-      alt: "Graduation celebration with balloons and golden confetti"
+      alt: "Graduation celebration with balloons and golden confetti",
+      height: 280
     },
     {
       src: "/gallery/IMG_9070-Edit.jpg",
       category: "ceremony",
       quote: "Where dedication meets celebration",
-      alt: "Graduation ceremony"
+      alt: "Graduation ceremony",
+      height: 400
     },
     {
       src: "/gallery/IMG_6158.jpg",
       category: "individual",
       quote: "Dreams take flight with golden confetti and endless possibilities",
-      alt: "Graduation celebration with balloons and golden confetti"
+      alt: "Graduation celebration with balloons and golden confetti",
+      height: 350
     },
     {
       src: "/gallery/img_223344.jpg",
       category: "candid",
       quote: "Surrounded by dreams, radiating confidence and grace",
-      alt: "Elegant graduation portrait with pink and white balloons"
+      alt: "Elegant graduation portrait with pink and white balloons",
+      height: 300
     },
     {
       src: "/gallery/IMG_6107.jpg",
       category: "individual",
       quote: "The future belongs to those who believe in the beauty of their dreams",
-      alt: "Individual graduation portrait"
+      alt: "Individual graduation portrait",
+      height: 380
     },
     {
       src: "/gallery/IMG_6333.jpg",
       category: "group",
       quote: "Together we achieved the impossible",
-      alt: "Group graduation photo"
+      alt: "Group graduation photo",
+      height: 260
     },
     {
       src: "/gallery/IMG_9222.jpg",
       category: "candid",
       quote: "Pure joy in a single moment",
-      alt: "Candid graduation moment"
+      alt: "Candid graduation moment",
+      height: 340
     },
     {
       src: "/gallery/IMG_9071-Edit.jpg",
       category: "ceremony",
       quote: "Where dedication meets celebration",
-      alt: "Graduation ceremony"
+      alt: "Graduation ceremony",
+      height: 420
     },
     {
       src: "/gallery/IMG_7626.jpg",
       category: "family",
       quote: "Success shared with those who matter most",
-      alt: "Family graduation photo"
+      alt: "Family graduation photo",
+      height: 290
     },
     {
       src: "/gallery/IMG_6094.jpg",
       category: "family",
       quote: "Success shared with those who matter most",
-      alt: "Family graduation photo"
+      alt: "Family graduation photo",
+      height: 360
     },
     {
       src: "/gallery/IMG_2146.jpg",
       category: "individual",
       quote: "Confidence earned through perseverance",
-      alt: "Individual portrait"
+      alt: "Individual portrait",
+      height: 310
     }
   ];
 
@@ -113,9 +142,24 @@ const Gallery = () => {
     ? images 
     : images.filter(img => img.category === filter);
 
+  // Create masonry columns
+  const createMasonryColumns = useCallback(() => {
+    const columnArrays: typeof filteredImages[] = Array.from({ length: columns }, () => []);
+    
+    filteredImages.forEach((image, index) => {
+      const columnIndex = index % columns;
+      columnArrays[columnIndex].push(image);
+    });
+    
+    return columnArrays;
+  }, [filteredImages, columns]);
+
+  const masonryColumns = createMasonryColumns();
+
   const handleImageLoad = (index: number) => {
     setLoadedImages(prev => new Set([...prev, index]));
   };
+
   const openLightbox = (index: number) => {
     setSelectedImage(index);
     document.body.style.overflow = 'hidden';
@@ -175,44 +219,64 @@ const Gallery = () => {
           ))}
         </div>
 
-        {/* Gallery Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredImages.map((image, index) => (
-            <div
-              key={index}
-              className={`group relative cursor-pointer overflow-hidden rounded-xl shadow-lg hover:shadow-2xl transition-all duration-700 transform hover:scale-105 hover:-rotate-1 ${
-                isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
-              }`}
-              style={{ transitionDelay: `${index * 100}ms` }}
-              onClick={() => openLightbox(index)}
-            >
-              <div className="aspect-square overflow-hidden">
-                {!loadedImages.has(index) && (
-                  <div className="w-full h-full bg-gray-200 animate-pulse flex items-center justify-center">
-                    <div className="w-8 h-8 border-4 border-amber-600 border-t-transparent rounded-full animate-spin"></div>
+        {/* Pinterest-style Masonry Gallery */}
+        <div 
+          ref={galleryRef}
+          className="flex gap-4 sm:gap-6 lg:gap-8"
+          style={{ alignItems: 'flex-start' }}
+        >
+          {masonryColumns.map((column, columnIndex) => (
+            <div key={columnIndex} className="flex-1 flex flex-col gap-4 sm:gap-6 lg:gap-8">
+              {column.map((image, imageIndex) => {
+                const globalIndex = filteredImages.findIndex(img => img.src === image.src);
+                
+                return (
+                  <div
+                    key={`${columnIndex}-${imageIndex}`}
+                    className={`group relative cursor-pointer overflow-hidden rounded-xl shadow-lg hover:shadow-2xl transition-all duration-700 transform hover:scale-[1.02] hover:-rotate-1 ${
+                      isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
+                    }`}
+                    style={{ 
+                      transitionDelay: `${(columnIndex * column.length + imageIndex) * 100}ms`,
+                      height: `${image.height}px`
+                    }}
+                    onClick={() => openLightbox(globalIndex)}
+                  >
+                    <div className="w-full h-full overflow-hidden">
+                      {!loadedImages.has(globalIndex) && (
+                        <div className="w-full h-full bg-gray-200 animate-pulse flex items-center justify-center">
+                          <div className="w-8 h-8 border-4 border-amber-600 border-t-transparent rounded-full animate-spin"></div>
+                        </div>
+                      )}
+                      <img
+                        src={image.src}
+                        alt={image.alt}
+                        className={`w-full h-full object-cover transition-all duration-700 group-hover:scale-110 group-hover:brightness-110 ${
+                          loadedImages.has(globalIndex) ? 'opacity-100' : 'opacity-0'
+                        }`}
+                        onLoad={() => handleImageLoad(globalIndex)}
+                      />
+                    </div>
+                    
+                    {/* Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-700">
+                      <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 text-white">
+                        <blockquote className="text-sm sm:text-lg font-light italic leading-relaxed transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-200">
+                          "{image.quote}"
+                        </blockquote>
+                      </div>
+                    </div>
+                    
+                    {/* Hover Effect Border */}
+                    <div className="absolute inset-0 border-4 border-amber-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl"></div>
+                    
+                    {/* Pinterest-style category badge */}
+                    <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium text-gray-800 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      {categories.find(cat => cat.id === image.category)?.name || image.category}
+                    </div>
                   </div>
-                )}
-                <img
-                  src={image.src}
-                  alt={image.alt}
-                  className={`w-full h-full object-cover transition-all duration-700 group-hover:scale-125 group-hover:brightness-110 ${
-                    loadedImages.has(index) ? 'opacity-100' : 'opacity-0'
-                  }`}
-                  onLoad={() => handleImageLoad(index)}
-                />
-              </div>
-              
-              {/* Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-700">
-                <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                  <blockquote className="text-lg font-light italic leading-relaxed transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-200">
-                    "{image.quote}"
-                  </blockquote>
-                </div>
-              </div>
-              
-              {/* Hover Effect Border */}
-              <div className="absolute inset-0 border-4 border-amber-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl"></div>
+                );
+              })}
             </div>
           ))}
         </div>

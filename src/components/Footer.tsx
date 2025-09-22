@@ -1,5 +1,4 @@
-import React from 'react';
-import { Camera, Phone, Mail, MapPin, Clock, Facebook, Instagram, Twitter } from 'lucide-react';
+import { Camera, Phone, Mail, Clock, Facebook, Instagram, Twitter, Globe } from 'lucide-react';
 
 const Footer = () => {
   const scrollToSection = (sectionId: string) => {
@@ -26,7 +25,7 @@ const Footer = () => {
               <a href="#" className="text-gray-300 hover:text-amber-400 transition-colors">
                 <Facebook className="h-6 w-6" />
               </a>
-              <a href="#" className="text-gray-300 hover:text-amber-400 transition-colors">
+              <a href="https://instagram.com/sowlstudios" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-amber-400 transition-colors" title="Sowl Studios">
                 <Instagram className="h-6 w-6" />
               </a>
               <a href="#" className="text-gray-300 hover:text-amber-400 transition-colors">
@@ -75,15 +74,39 @@ const Footer = () => {
           <div>
             <h3 className="text-lg font-semibold mb-6">Get in Touch</h3>
             <div className="space-y-4">
-              <div className="flex items-center space-x-3">
-                <Phone className="h-5 w-5 text-amber-400" />
-                <span className="text-gray-300">+233 543 358413</span>
+              {/* Phone Numbers */}
+              <div className="space-y-2">
+                <div className="flex items-center space-x-3">
+                  <Phone className="h-5 w-5 text-amber-400" />
+                  <div className="text-gray-300">
+                    <p className="font-medium">Julius: 0543358413</p>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-3 ml-8">
+                  <span className="text-gray-300">Joel: +233 57 949 9223</span>
+                </div>
+                <div className="flex items-center space-x-3 ml-8">
+                  <span className="text-gray-300">Abena: 0557009665</span>
+                </div>
               </div>
+
+              {/* Email */}
               <div className="flex items-center space-x-3">
                 <Mail className="h-5 w-5 text-amber-400" />
-                <span className="text-gray-300">sowlstudios@gmail.com</span>
+                <a href="mailto:support@sowlstudios.xyz" className="text-gray-300 hover:text-amber-400 transition-colors">
+                  support@sowlstudios.xyz
+                </a>
+              </div>
+
+              {/* Website */}
+              <div className="flex items-center space-x-3">
+                <Globe className="h-5 w-5 text-amber-400" />
+                <a href="https://www.sowlstudios.xyz" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-amber-400 transition-colors">
+                  www.sowlstudios.xyz
+                </a>
               </div>
       
+              {/* Business Hours */}
               <div className="flex items-start space-x-3">
                 <Clock className="h-5 w-5 text-amber-400 mt-1" />
                 <div className="text-gray-300">
