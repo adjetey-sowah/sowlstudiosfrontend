@@ -6,6 +6,7 @@ interface FormData {
   lastName: string;
   phoneNumber: string;
   schoolUniversity: string;
+  faculty: string;
   graduationDate: string;
   packagePreference: string;
   preferredLocation: string;
@@ -17,7 +18,8 @@ const BookingForm = () => {
     firstName: '',
     lastName: '',
     phoneNumber: '',
-    schoolUniversity: '',
+    schoolUniversity: 'University of Professional Studies Accra',
+    faculty: '',
     graduationDate: '',
     packagePreference: '',
     preferredLocation: '',
@@ -28,9 +30,27 @@ const BookingForm = () => {
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
 
+  // UPSA Faculty graduation dates
+  const upsaFaculties = {
+    'Faculty of IT & Communication Studies': '2025-09-26',
+    'Faculty of Accounting & Finance': '2025-09-29',
+    'Faculty of Management Studies': '2025-10-01',
+    'School of Graduate Studies': '2025-10-03'
+  };
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    
+    if (name === 'schoolUniversity' && value !== 'University of Professional Studies Accra') {
+      // Reset faculty and graduation date if switching away from UPSA
+      setFormData(prev => ({ ...prev, [name]: value, faculty: '', graduationDate: '' }));
+    } else if (name === 'faculty' && formData.schoolUniversity === 'University of Professional Studies Accra') {
+      // Auto-populate graduation date based on faculty selection
+      const graduationDate = upsaFaculties[value as keyof typeof upsaFaculties] || '';
+      setFormData(prev => ({ ...prev, [name]: value, graduationDate }));
+    } else {
+      setFormData(prev => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -40,12 +60,15 @@ const BookingForm = () => {
 
     try {
       const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api/v1';
+      // Exclude faculty field from backend submission
+      const { faculty, ...submissionData } = formData;
+      
       const response = await fetch(`${apiBaseUrl}/bookings`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(submissionData)
       });
 
       if (response.ok) {
@@ -56,6 +79,7 @@ const BookingForm = () => {
           lastName: '',
           phoneNumber: '',
           schoolUniversity: '',
+          faculty: '',
           graduationDate: '',
           packagePreference: '',
           preferredLocation: '',
@@ -107,7 +131,7 @@ const BookingForm = () => {
         </div>
 
         {/* Booking Form */}
-        <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-xl p-8 md:p-12">
+        <form id="booking-form" onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-xl p-8 md:p-12">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Personal Information */}
             <div className="space-y-6">
@@ -155,7 +179,8 @@ const BookingForm = () => {
                   onChange={handleInputChange}
                   required
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-600 focus:border-transparent transition-colors"
-                  placeholder="(555) 123-4567"
+                  placeholder="0XX XXX XXXX (e.g., 024 123 4567)"
+                  pattern="[0-9]{3}\s[0-9]{3}\s[0-9]{4}"
                 />
               </div>
             </div>
@@ -178,45 +203,32 @@ const BookingForm = () => {
                   <option value="University of Ghana">University of Ghana (UG)</option>
                   <option value="Kwame Nkrumah University of Science and Technology">Kwame Nkrumah University of Science and Technology (KNUST)</option>
                   <option value="University of Cape Coast">University of Cape Coast (UCC)</option>
-                  <option value="University of Education Winneba">University of Education, Winneba (UEW)</option>
-                  <option value="University for Development Studies">University for Development Studies (UDS)</option>
-                  <option value="Ghana Institute of Management and Public Administration">Ghana Institute of Management and Public Administration (GIMPA)</option>
                   <option value="University of Professional Studies Accra">University of Professional Studies, Accra (UPSA)</option>
-                  <option value="University of Mines and Technology">University of Mines and Technology (UMaT)</option>
-                  <option value="University of Health and Allied Sciences">University of Health and Allied Sciences (UHAS)</option>
-                  <option value="University of Energy and Natural Resources">University of Energy and Natural Resources (UENR)</option>
-                  <option value="Ghana Communication Technology University">Ghana Communication Technology University (GCTU)</option>
-                  <option value="Accra Technical University">Accra Technical University (ATU)</option>
-                  <option value="Kumasi Technical University">Kumasi Technical University (KsTU)</option>
-                  <option value="Cape Coast Technical University">Cape Coast Technical University (CCTU)</option>
-                  <option value="Ho Technical University">Ho Technical University (HTU)</option>
-                  <option value="Takoradi Technical University">Takoradi Technical University (TTU)</option>
-                  <option value="Sunyani Technical University">Sunyani Technical University (STU)</option>
-                  <option value="Tamale Technical University">Tamale Technical University (TaTU)</option>
-                  <option value="Koforidua Technical University">Koforidua Technical University (KTU)</option>
-                  <option value="Bolgatanga Technical University">Bolgatanga Technical University (BTU)</option>
-                  <option value="Wa Technical University">Wa Technical University (WTU)</option>
-                  <option value="Central University">Central University</option>
-                  <option value="Valley View University">Valley View University</option>
-                  <option value="Methodist University College Ghana">Methodist University College Ghana</option>
-                  <option value="Catholic University College of Ghana">Catholic University College of Ghana</option>
-                  <option value="Presbyterian University College">Presbyterian University College Ghana</option>
-                  <option value="Ashesi University">Ashesi University</option>
-                  <option value="Lancaster University Ghana">Lancaster University Ghana</option>
-                  <option value="Academic City University College">Academic City University College</option>
-                  <option value="Ghana Baptist University College">Ghana Baptist University College</option>
-                  <option value="Wisconsin International University College">Wisconsin International University College</option>
-                  <option value="Webster University Ghana">Webster University Ghana</option>
-                  <option value="Islamic University College">Islamic University College, Ghana</option>
-                  <option value="Regional Maritime University">Regional Maritime University</option>
-                  <option value="Ghana Institute of Journalism">Ghana Institute of Journalism (GIJ)</option>
-                  <option value="Ghana Institute of Languages">Ghana Institute of Languages (GIL)</option>
-                  <option value="Ghana Christian University College">Ghana Christian University College</option>
-                  <option value="Pentecost University">Pentecost University</option>
-                  <option value="All Nations University">All Nations University</option>
-                  <option value="Garden City University College">Garden City University College</option>
                 </select>
               </div>
+
+              {/* Faculty Selection - Only show for UPSA */}
+              {formData.schoolUniversity === 'University of Professional Studies Accra' && (
+                <div>
+                  <label htmlFor="faculty" className="block text-sm font-semibold text-gray-700 mb-2">
+                    Faculty/School *
+                  </label>
+                  <select
+                    id="faculty"
+                    name="faculty"
+                    value={formData.faculty}
+                    onChange={handleInputChange}
+                    required
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-600 focus:border-transparent transition-colors"
+                  >
+                    <option value="">Select your faculty/school</option>
+                    <option value="Faculty of IT & Communication Studies">Faculty of IT & Communication Studies</option>
+                    <option value="Faculty of Accounting & Finance">Faculty of Accounting & Finance</option>
+                    <option value="Faculty of Management Studies">Faculty of Management Studies</option>
+                    <option value="School of Graduate Studies">School of Graduate Studies</option>
+                  </select>
+                </div>
+              )}
 
               <div>
                 <label htmlFor="graduationDate" className="block text-sm font-semibold text-gray-700 mb-2">
@@ -231,26 +243,111 @@ const BookingForm = () => {
                   required
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-600 focus:border-transparent transition-colors"
                 />
+                {formData.schoolUniversity === 'University of Professional Studies Accra' && (
+                  <p className="text-xs text-gray-500 mt-1">
+                    Date will auto-populate when you select your faculty, but you can modify it if needed
+                  </p>
+                )}
               </div>
+            </div>
+          </div>
 
-              <div>
-                <label htmlFor="packagePreference" className="block text-sm font-semibold text-gray-700 mb-2">
-                  Package Preference *
-                </label>
-                <select
-                  id="packagePreference"
+          {/* Photography Package Selection - Full Width */}
+          <div className="mt-8">
+            <label className="block text-sm font-semibold text-gray-700 mb-5">
+              Graduation Photography Package *
+            </label>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {/* Basic Package */}
+              <label className="relative flex flex-col p-6 border-2 border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 transition-all duration-200 hover:border-amber-400">
+                <input
+                  type="radio"
                   name="packagePreference"
-                  value={formData.packagePreference}
+                  value="Basic Package - 250 CEDIS"
+                  checked={formData.packagePreference === 'Basic Package - 250 CEDIS'}
                   onChange={handleInputChange}
-                  required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-600 focus:border-transparent transition-colors"
-                >
-                  <option value="">Select package</option>
-                  <option value="Basic Package">Basic Package</option>
-                  <option value="Premium Package">Premium Package</option>
-                  <option value="Deluxe Package">Deluxe Package</option>
-                  <option value="Custom Package">Custom Package</option>
-                </select>
+                  className="absolute top-4 right-4 h-4 w-4 text-amber-600 focus:ring-amber-600 border-gray-300"
+                />
+                <div className="mb-3">
+                  <span className="inline-block text-xs font-bold text-amber-800 bg-amber-100 px-3 py-1 rounded-full">BASIC</span>
+                </div>
+                <div className="text-2xl font-bold text-amber-600 mb-3">250 CEDIS</div>
+                <div className="text-sm text-gray-600 space-y-1">
+                  <div className="flex items-center">
+                    <span className="w-2 h-2 bg-amber-600 rounded-full mr-2"></span>
+                    7 pictures
+                  </div>
+                  <div className="flex items-center">
+                    <span className="w-2 h-2 bg-amber-600 rounded-full mr-2"></span>
+                    4 retouched
+                  </div>
+                </div>
+              </label>
+
+              {/* Premium Package */}
+              <label className="relative flex flex-col p-6 border-2 border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 transition-all duration-200 hover:border-amber-400">
+                <input
+                  type="radio"
+                  name="packagePreference"
+                  value="Premium Package - 500 CEDIS"
+                  checked={formData.packagePreference === 'Premium Package - 500 CEDIS'}
+                  onChange={handleInputChange}
+                  className="absolute top-4 right-4 h-4 w-4 text-amber-600 focus:ring-amber-600 border-gray-300"
+                />
+                <div className="mb-3">
+                  <span className="inline-block text-xs font-bold text-white bg-amber-600 px-3 py-1 rounded-full">PREMIUM</span>
+                </div>
+                <div className="text-2xl font-bold text-amber-600 mb-3">500 CEDIS</div>
+                <div className="text-sm text-gray-600 space-y-1">
+                  <div className="flex items-center">
+                    <span className="w-2 h-2 bg-amber-600 rounded-full mr-2"></span>
+                    10 pictures
+                  </div>
+                  <div className="flex items-center">
+                    <span className="w-2 h-2 bg-amber-600 rounded-full mr-2"></span>
+                    6 retouched
+                  </div>
+                </div>
+              </label>
+
+              {/* Deluxe Package */}
+              <label className="relative flex flex-col p-6 border-2 border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 transition-all duration-200 hover:border-amber-400">
+                <input
+                  type="radio"
+                  name="packagePreference"
+                  value="Deluxe Package - 700 CEDIS"
+                  checked={formData.packagePreference === 'Deluxe Package - 700 CEDIS'}
+                  onChange={handleInputChange}
+                  className="absolute top-4 right-4 h-4 w-4 text-amber-600 focus:ring-amber-600 border-gray-300"
+                />
+                <div className="mb-3">
+                  <span className="inline-block text-xs font-bold text-white bg-amber-800 px-3 py-1 rounded-full">DELUXE</span>
+                </div>
+                <div className="text-2xl font-bold text-amber-600 mb-3">700 CEDIS</div>
+                <div className="text-sm text-gray-600 space-y-1">
+                  <div className="flex items-center">
+                    <span className="w-2 h-2 bg-amber-600 rounded-full mr-2"></span>
+                    A group of 3
+                  </div>
+                  <div className="flex items-center">
+                    <span className="w-2 h-2 bg-amber-600 rounded-full mr-2"></span>
+                    25 pictures
+                  </div>
+                </div>
+              </label>
+            </div>
+            
+            {/* Additional Info */}
+            <div className="mt-4 p-4 bg-amber-50 border border-amber-200 rounded-lg">
+              <div className="text-sm text-amber-800">
+                <div className="font-semibold mb-2">Additional Services Available:</div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs">
+                  <div>• Extra Photos & Retouching</div>
+                  <div>• Frames</div>
+                </div>
+                <div className="mt-3 font-semibold text-amber-900">
+                  BOOKING FEE: 20 CEDIS (Non-refundable)
+                </div>
               </div>
             </div>
           </div>

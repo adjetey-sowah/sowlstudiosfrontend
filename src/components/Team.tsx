@@ -12,9 +12,9 @@ const Team = () => {
       specialization: "Portrait & Ceremony Photography"
     },
     {
-      name: "Marcus Chen",
+      name: "Joel Amena",
       role: "Senior Photographer",
-      image: "https://images.pexels.com/photos/1681010/pexels-photo-1681010.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&fit=crop",
+      image: "/gallery/sirjoel.jpg",
       bio: "Marcus specializes in capturing candid moments and group dynamics, ensuring every graduate's personality shines through.",
       experience: "8+ Years",
       specialization: "Group & Candid Photography"
