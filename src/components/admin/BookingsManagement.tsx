@@ -35,6 +35,7 @@ interface BookingResponseDto {
   emailSent: boolean;
   smsSent: boolean;
   status: 'PENDING' | 'CONFIRMED' | 'CANCELLED' | 'COMPLETED';
+  amount: number;
 }
 
 interface PageResponse {
@@ -64,7 +65,7 @@ const BookingsManagement: React.FC = () => {
     try {
       setLoading(true);
       const response = await adminAPI.getBookings(currentPage, pageSize, statusFilter);
-      setBookings(response.data);
+      setBookings(response.data as PageResponse);
       setError(null);
     } catch (err) {
       setError(handleApiError(err));
@@ -238,6 +239,9 @@ const BookingsManagement: React.FC = () => {
                   Package
                 </th>
                 <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                  Amount
+                </th>
+                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                   Status
                 </th>
                 <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
@@ -275,6 +279,11 @@ const BookingsManagement: React.FC = () => {
                     <div className="flex items-center text-sm text-gray-600">
                       <Package className="h-4 w-4 mr-1" />
                       {booking.packagePreference}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="text-sm font-semibold text-green-600">
+                      ₵{booking.amount ? booking.amount.toFixed(2) : '0.00'}
                     </div>
                   </td>
                   <td className="px-6 py-4">

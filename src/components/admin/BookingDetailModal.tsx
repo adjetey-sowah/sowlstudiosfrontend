@@ -32,6 +32,7 @@ interface BookingResponseDto {
   emailSent: boolean;
   smsSent: boolean;
   status: 'PENDING' | 'CONFIRMED' | 'CANCELLED' | 'COMPLETED';
+  amount: number;
 }
 
 interface BookingDetailModalProps {
@@ -163,6 +164,14 @@ const BookingDetailModal: React.FC<BookingDetailModalProps> = ({
                       <div className="flex items-center">
                         <Package className="h-4 w-4 mr-2 text-gray-400" />
                         <p className="text-gray-900">{booking.packagePreference}</p>
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-600 mb-1">Amount</label>
+                      <div className="flex items-center">
+                        <span className="text-lg font-bold text-green-600">
+                          ₵{booking.amount ? booking.amount.toFixed(2) : '0.00'}
+                        </span>
                       </div>
                     </div>
                     <div className="md:col-span-2">

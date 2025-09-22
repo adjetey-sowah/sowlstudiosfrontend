@@ -9,6 +9,7 @@ import Testimonials from './components/Testimonials';
 import Partners from './components/Partners';
 import BookingForm from './components/BookingForm';
 import Footer from './components/Footer';
+import Chatbot from './components/Chatbot';
 import AdminApp from './components/admin/AdminApp';
 
 // Main website component
@@ -23,6 +24,7 @@ const MainWebsite = () => (
     <Partners />
     <BookingForm />
     <Footer />
+    <Chatbot />
   </div>
 );
 

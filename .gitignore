@@ -186,3 +186,7 @@ jspm_packages/
 # Temporary folders
 tmp/
 temp/
+
+.env.development
+.env.example
+.env.production

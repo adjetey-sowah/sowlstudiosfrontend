@@ -135,7 +135,7 @@ const BookingForm = () => {
               <div className="bg-white rounded-xl p-6 text-center shadow-sm">
                 <MapPin className="h-8 w-8 text-amber-600 mx-auto mb-3" />
                 <h3 className="font-semibold text-gray-900 mb-2">Flexible Locations</h3>
-                <p className="text-gray-600 text-sm">On-campus or studio</p>
+                <p className="text-gray-600 text-sm">Campus or external location</p>
               </div>
               <div className="bg-white rounded-xl p-6 text-center shadow-sm">
                 <Camera className="h-8 w-8 text-amber-600 mx-auto mb-3" />
@@ -378,7 +378,7 @@ const BookingForm = () => {
                     value={formData.preferredLocation}
                     onChange={handleInputChange}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-600 focus:border-transparent transition-colors"
-                    placeholder="On-campus, studio, or specific location"
+                    placeholder="On-campus or specific location"
                   />
                 </div>
 

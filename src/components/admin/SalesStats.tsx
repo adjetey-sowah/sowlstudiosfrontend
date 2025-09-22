@@ -17,11 +17,25 @@ interface SalesChartData {
   amount: number;
 }
 
-interface SalesResponse {
-  totalSales: number;
-  bookingsCount?: number;
-  averageAmount?: number;
+interface BookingResponseDto {
+  id: number;
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+  schoolUniversity: string;
+  graduationDate: string;
+  packagePreference: string;
+  preferredLocation: string;
+  additionalRequests: string;
+  createdAt: string;
+  updatedAt: string;
+  emailSent: boolean;
+  smsSent: boolean;
+  status: 'PENDING' | 'CONFIRMED' | 'CANCELLED' | 'COMPLETED';
+  amount: number;
 }
+
+// Removed unused interface - using dynamic response parsing instead
 
 // Simple Sales Chart Component
 const SalesChart: React.FC<{ data: SalesChartData[] }> = ({ data }) => {
@@ -100,13 +114,30 @@ const SalesStats: React.FC<SalesStatsProps> = ({ className = '' }) => {
       );
 
       const response = await adminAPI.getTotalSales(cleanParams);
-      // Handle the response structure properly
-      const salesData = response as SalesResponse;
-      const totalAmount = salesData.totalSales || 0;
+      console.log('Sales API Response:', response); // Debug log
+      
+      // Handle different possible response structures
+      let totalAmount = 0;
+      if (typeof response === 'number') {
+        totalAmount = response;
+      } else if (response && typeof response === 'object') {
+        const responseObj = response as any;
+        
+        // Check for nested data structure first (your API format)
+        if (responseObj.data && responseObj.data.totalSales !== undefined) {
+          totalAmount = responseObj.data.totalSales;
+        } 
+        // Fallback to direct properties
+        else {
+          totalAmount = responseObj.totalSales || responseObj.total || responseObj.amount || responseObj.totalAmount || 0;
+        }
+      }
+      
+      console.log('Parsed total amount:', totalAmount); // Debug log
       setTotalSales(totalAmount);
       
-      // Generate mock chart data based on current filters or default periods
-      generateChartData(totalAmount, params);
+      // Generate real chart data from bookings
+      await generateRealChartData(totalAmount, params);
     } catch (err) {
       setError(handleApiError(err));
       setTotalSales(0);
@@ -116,60 +147,69 @@ const SalesStats: React.FC<SalesStatsProps> = ({ className = '' }) => {
     }
   };
 
-  const generateChartData = (totalAmount: number, currentFilters: Partial<SalesFilters>) => {
-    // Generate mock data for visualization - in a real app, this would come from the API
-    const mockData: SalesChartData[] = [];
-    
-    if (currentFilters.startDate && currentFilters.endDate) {
-      // Generate data based on date range
-      const start = new Date(currentFilters.startDate);
-      const end = new Date(currentFilters.endDate);
-      const daysDiff = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
+  const generateRealChartData = async (_totalAmount: number, currentFilters: Partial<SalesFilters>) => {
+    try {
+      // Fetch all bookings to generate chart data
+      const bookingsResponse = await adminAPI.getBookings(0, 100, currentFilters.status || '') as any;
+      const bookings = bookingsResponse.data?.content as BookingResponseDto[] || [];
       
-      if (daysDiff <= 7) {
-        // Daily breakdown for week or less
-        for (let i = 0; i <= daysDiff; i++) {
-          const date = new Date(start);
-          date.setDate(start.getDate() + i);
-          mockData.push({
-            period: date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-            amount: Math.random() * (totalAmount / (daysDiff + 1)) * 2
-          });
-        }
-      } else if (daysDiff <= 31) {
-        // Weekly breakdown for month
-        const weeksCount = Math.ceil(daysDiff / 7);
-        for (let i = 0; i < weeksCount; i++) {
-          mockData.push({
-            period: `Week ${i + 1}`,
-            amount: Math.random() * (totalAmount / weeksCount) * 2
-          });
-        }
-      } else {
-        // Monthly breakdown for longer periods
-        const monthsCount = Math.ceil(daysDiff / 30);
-        for (let i = 0; i < monthsCount; i++) {
-          const date = new Date(start);
-          date.setMonth(start.getMonth() + i);
-          mockData.push({
-            period: date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' }),
-            amount: Math.random() * (totalAmount / monthsCount) * 2
-          });
-        }
+      console.log('Fetched bookings for chart:', bookings);
+      
+      if (!bookings || bookings.length === 0) {
+        setChartData([]);
+        return;
       }
-    } else {
-      // Default last 7 days
-      for (let i = 6; i >= 0; i--) {
-        const date = new Date();
-        date.setDate(date.getDate() - i);
-        mockData.push({
-          period: date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-          amount: Math.random() * (totalAmount / 7) * 2
-        });
-      }
+      
+      // Group bookings by date for chart
+      const chartData: SalesChartData[] = [];
+      const dateGroups: { [key: string]: number } = {};
+      
+      bookings.forEach(booking => {
+        if (booking.amount && booking.amount > 0) {
+          const bookingDate = new Date(booking.createdAt);
+          let dateKey: string;
+          
+          if (currentFilters.startDate && currentFilters.endDate) {
+            const start = new Date(currentFilters.startDate);
+            const end = new Date(currentFilters.endDate);
+            const daysDiff = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
+            
+            if (daysDiff <= 7) {
+              // Daily grouping
+              dateKey = bookingDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+            } else if (daysDiff <= 31) {
+              // Weekly grouping
+              const weekStart = new Date(bookingDate);
+              weekStart.setDate(bookingDate.getDate() - bookingDate.getDay());
+              dateKey = `Week of ${weekStart.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`;
+            } else {
+              // Monthly grouping
+              dateKey = bookingDate.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+            }
+          } else {
+            // Default: daily grouping for last 7 days
+            dateKey = bookingDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+          }
+          
+          dateGroups[dateKey] = (dateGroups[dateKey] || 0) + booking.amount;
+        }
+      });
+      
+      // Convert to chart data format
+      Object.entries(dateGroups).forEach(([period, amount]) => {
+        chartData.push({ period, amount });
+      });
+      
+      // Sort by date (approximate)
+      chartData.sort((a, b) => a.period.localeCompare(b.period));
+      
+      console.log('Generated chart data:', chartData);
+      setChartData(chartData);
+      
+    } catch (error) {
+      console.error('Error generating chart data:', error);
+      setChartData([]);
     }
-    
-    setChartData(mockData);
   };
 
   const handleFilterChange = (key: keyof SalesFilters, value: string) => {
@@ -287,7 +327,7 @@ const SalesStats: React.FC<SalesStatsProps> = ({ className = '' }) => {
       </div>
 
       {/* Sales Chart */}
-      {!loading && !error && (
+      {!loading && !error && chartData.length > 0 && (
         <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
           <SalesChart data={chartData} />
         </div>
